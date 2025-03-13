@@ -83,4 +83,34 @@ public class ContentController {
         contentService.deleteVideo(id);
         return ResponseEntity.ok().build();
     }
-} 
+
+    // Integrated content endpoints
+    @GetMapping("/contents")
+    public ResponseEntity<?> getAllContents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt,desc") String[] sort) {
+        return ResponseEntity.ok(contentService.getAllContents(page, size, sort));
+    }
+
+    @GetMapping("/contents/{id}")
+    public ResponseEntity<?> getContent(@PathVariable Long id) {
+        return ResponseEntity.ok(contentService.getContentById(id));
+    }
+
+    @GetMapping("/users/{userId}/contents")
+    public ResponseEntity<?> getUserContents(
+            @PathVariable Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(contentService.getContentsByUserId(userId, page, size));
+    }
+
+    @GetMapping("/contents/search")
+    public ResponseEntity<?> searchContents(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(contentService.searchContents(keyword, page, size));
+    }
+}

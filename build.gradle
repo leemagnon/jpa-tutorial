@@ -29,7 +29,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     
     // Development Tools
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    // developmentOnly 'org.springframework.boot:spring-boot-devtools'
     
     // Database
     runtimeOnly 'org.postgresql:postgresql'
@@ -41,7 +41,9 @@ tasks.named('test') {
 }
 
 bootRun {
-    // 자동 리로드 활성화
-    sourceResources sourceSets.main
-    jvmArgs = ['-Dspring.devtools.restart.enabled=true']
+    jvmArgs = [
+        // "-Dspring.devtools.restart.enabled=true",
+        // "-Dspring.devtools.livereload.enabled=true",
+        // "-noverify"
+    ]
 }
