@@ -11,6 +11,12 @@
 build/
 gradle/wrapper/gradle-wrapper.jar
 
+# 환경 변수 파일
+.env
+.env.local
+.env.production
+.env.development
+
 ### Spring Boot ###
 application-*.properties
 !application.properties

@@ -10,16 +10,13 @@ services:
       - "8080:8080"         # API 서버 포트
     environment:
       # 데이터베이스 설정
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/jpa_tutorial
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       # Spring 설정
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_SQL_INIT_MODE=always
       - SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION=true
-      # DevTools 설정
-      # - SPRING_DEVTOOLS_RESTART_ENABLED=true
-      # - SPRING_DEVTOOLS_LIVERELOAD_ENABLED=true
     volumes:
       - .:/app
       - gradle_cache:/root/.gradle
@@ -32,9 +29,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=jpa_tutorial
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

@@ -11,3 +11,9 @@ docker-compose.yml
 Dockerfile
 .dockerignore
 gradle.properties 
+
+# 환경 변수 파일
+.env
+.env.local
+.env.production
+.env.development
