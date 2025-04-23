@@ -1,5 +1,6 @@
 package com.example.jpatutorial.controller;
 
+import com.example.jpatutorial.dto.UserDTO;
 import com.example.jpatutorial.entity.User;
 import com.example.jpatutorial.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +17,17 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/{id}")
+    public UserDTO getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public UserDTO createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 

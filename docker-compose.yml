@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  nginx:    # Nginx 웹 서버 설정
+    image: nginx:latest
+    ports:
+      - "80:80" # HTTP 포트: 호스트의 80포트를 컨테이너의 80포트에 매핑
+      - "443:443" # HTTPS 포트: 호스트의 443포트를 컨테이너의 443포트에 매핑
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro # Nginx 설정 파일을 마운트 (read-only)
+      - ./certs:/etc/nginx/certs:ro # SSL 인증서 디렉토리를 마운트 (read-only)
+    depends_on:
+      - app
+
+  app:    # Spring Boot 애플리케이션 서비스
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development    # 개발 환경용 스테이지 사용
+    expose:
+      - "8080"         # 내부 네트워크에서만 접근 가능하도록 변경
+    environment:
+      # 데이터베이스 설정
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      # Spring 설정
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_SQL_INIT_MODE=always
+      - SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION=true
+    volumes:
+      - .:/app
+      - gradle_cache:/root/.gradle
+      - /dev/null:/app/gradle.properties
+    depends_on:
+      - db
+
+  db:    # PostgreSQL 데이터베이스 서비스
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:    # 데이터베이스 데이터 영속성
+  gradle_cache:     # Gradle 빌드 캐시

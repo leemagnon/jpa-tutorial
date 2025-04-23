@@ -28,6 +28,7 @@ docker-compose.override.yml
 
 ### Project Specific ###
 gradle.properties
+certs/
 
 # Windows
 Thumbs.db
